@@ -1,0 +1,42 @@
+{
+  "name": "admin-portal-starter",
+  "version": "1.0.0",
+  "description": "Full-stack admin portal starter template with Vue 3 + NestJS",
+  "private": true,
+  "packageManager": "pnpm@9.1.0",
+  "keywords": [
+    "fullstack",
+    "admin-portal",
+    "vue3",
+    "nestjs",
+    "typescript",
+    "monorepo",
+    "starter-template"
+  ],
+  "scripts": {
+    "dev": "concurrently \"pnpm dev:api\" \"pnpm dev:web\"",
+    "dev:api": "pnpm --filter api dev",
+    "dev:web": "pnpm --filter web dev",
+    "dev:docker": "pnpm docker:up && concurrently \"pnpm dev:web\" \"pnpm docker:logs\"",
+    "build": "pnpm build:api && pnpm build:web",
+    "build:api": "pnpm --filter api build",
+    "build:web": "pnpm --filter web build",
+    "typecheck": "pnpm --filter web typecheck",
+    "test": "pnpm --filter api test",
+    "docker:up": "cd apps/api && docker-compose up -d --build",
+    "docker:down": "cd apps/api && docker-compose down",
+    "docker:logs": "cd apps/api && docker-compose logs -f",
+    "docker:restart": "pnpm docker:down && pnpm docker:up",
+    "docker:clean": "cd apps/api && docker-compose down -v --rmi all",
+    "clean": "pnpm --recursive clean && rimraf node_modules",
+    "install:all": "pnpm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "rimraf": "^5.0.5"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}
