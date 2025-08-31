@@ -12,7 +12,7 @@ export function createServiceConfig(env: Env.ImportMeta) {
   try {
     other = json5.parse(VITE_OTHER_SERVICE_BASE_URL);
   } catch {
-    // eslint-disable-next-line no-console
+     
     console.error('VITE_OTHER_SERVICE_BASE_URL is not a valid json5 string');
   }
 

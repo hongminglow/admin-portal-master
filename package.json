@@ -24,6 +24,8 @@
     "typecheck": "pnpm --filter web typecheck",
     "test": "pnpm --filter api test",
     "docker:up": "cd apps/api && docker-compose up -d --build",
+    "docker:start": "cd apps/api && docker-compose start",
+    "docker:stop": "cd apps/api && docker-compose stop",
     "docker:down": "cd apps/api && docker-compose down",
     "docker:logs": "cd apps/api && docker-compose logs -f",
     "docker:restart": "pnpm docker:down && pnpm docker:up",
