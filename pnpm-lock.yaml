@@ -324,6 +324,9 @@ importers:
       '@vueuse/core':
         specifier: 13.5.0
         version: 13.5.0(vue@3.5.17(typescript@5.8.3))
+      axios:
+        specifier: ^1.8.4
+        version: 1.10.0
       clipboard:
         specifier: 2.0.11
         version: 2.0.11
@@ -506,15 +509,27 @@ importers:
       '@sa/utils':
         specifier: workspace:*
         version: link:../utils
+      '@vueuse/core':
+        specifier: ^13.5.0
+        version: 13.5.0(vue@3.5.17(typescript@5.8.3))
+      vue:
+        specifier: ^3.5.17
+        version: 3.5.17(typescript@5.8.3)
 
   packages/materials:
     dependencies:
+      '@sa/color':
+        specifier: workspace:*
+        version: link:../color
       '@sa/utils':
         specifier: workspace:*
         version: link:../utils
       simplebar-vue:
         specifier: 2.4.2
         version: 2.4.2(vue@3.5.17(typescript@5.8.3))
+      vue:
+        specifier: ^3.5.17
+        version: 3.5.17(typescript@5.8.3)
     devDependencies:
       typed-css-modules:
         specifier: 0.9.1
@@ -559,7 +574,14 @@ importers:
         specifier: 6.0.1
         version: 6.0.1
 
-  packages/uno-preset: {}
+  packages/uno-preset:
+    dependencies:
+      '@unocss/core':
+        specifier: ^66.5.0
+        version: 66.5.0
+      '@unocss/preset-uno':
+        specifier: ^66.5.0
+        version: 66.5.0
 
   packages/utils:
     dependencies:
@@ -2966,6 +2988,9 @@ packages:
 
   '@unocss/preset-uno@66.3.3':
     resolution: {integrity: sha512-Tiho4LidpuMHrB19GHTU6XrL0A5eFELHk9ebQ/3WeTy+K/9a6Hn5zsHJe5UCtOsEcUdKB33oZx0hXUp93hb/YQ==}
+
+  '@unocss/preset-uno@66.5.0':
+    resolution: {integrity: sha512-z39CWf3hI2ghmizPLqOefF1udcF8m/IJ50T6OO+sNpzJIkbL8FUaxGsdf0bKIVUl180EKRSV6kpIOST4nMN5Bg==}
 
   '@unocss/preset-wind3@66.3.3':
     resolution: {integrity: sha512-iXmjvPqvmPTo4z7epQDqHxzlGRsbLJEgfETqTrRJeagvFG7Gs+ajS8cQhbf6wL01dSRHjvhVXi3MsIvqfHHXOw==}
@@ -11459,6 +11484,11 @@ snapshots:
     dependencies:
       '@unocss/core': 66.3.3
       '@unocss/preset-wind3': 66.3.3
+
+  '@unocss/preset-uno@66.5.0':
+    dependencies:
+      '@unocss/core': 66.5.0
+      '@unocss/preset-wind3': 66.5.0
 
   '@unocss/preset-wind3@66.3.3':
     dependencies:

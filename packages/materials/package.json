@@ -6,12 +6,16 @@
   },
   "typesVersions": {
     "*": {
-      "*": ["./src/*"]
+      "*": [
+        "./src/*"
+      ]
     }
   },
   "dependencies": {
+    "@sa/color": "workspace:*",
     "@sa/utils": "workspace:*",
-    "simplebar-vue": "2.4.2"
+    "simplebar-vue": "2.4.2",
+    "vue": "^3.5.17"
   },
   "devDependencies": {
     "typed-css-modules": "0.9.1"
