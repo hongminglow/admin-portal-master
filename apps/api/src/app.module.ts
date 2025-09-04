@@ -2,6 +2,7 @@ import type { FastifyRequest } from "fastify";
 
 import { ClassSerializerInterceptor, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+import { CqrsModule } from "@nestjs/cqrs";
 
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
 import { ThrottlerGuard } from "@nestjs/throttler";
@@ -32,64 +33,64 @@ import { DashboardModule } from "./modules/dashboard/dashboard.module";
 import { SocketModule } from "./socket/socket.module";
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      expandVariables: true,
-      // 指定多个 env 文件时，第一个优先级最高
-      envFilePath: [".env.local", `.env.${process.env.NODE_ENV}`, ".env"],
-      load: [...Object.values(config)],
-    }),
-    // 启用 CLS 上下文
-    ClsModule.forRoot({
-      global: true,
-      // https://github.com/Papooch/nestjs-cls/issues/92
-      interceptor: {
-        mount: true,
-        setup: (cls, context) => {
-          const req = context
-            .switchToHttp()
-            .getRequest<FastifyRequest<{ Params: { id?: string } }>>();
-          if (req.params?.id && req.body) {
-            // 供自定义参数验证器(UniqueConstraint)使用
-            cls.set("operateId", Number.parseInt(req.params.id));
-          }
-        },
-      },
-    }),
-    SharedModule,
-    DatabaseModule,
+	imports: [
+		ConfigModule.forRoot({
+			isGlobal: true,
+			expandVariables: true,
+			// 指定多个 env 文件时，第一个优先级最高
+			envFilePath: [".env.local", `.env.${process.env.NODE_ENV}`, ".env"],
+			load: [...Object.values(config)],
+		}),
+		// 启用 CLS 上下文
+		ClsModule.forRoot({
+			global: true,
+			// https://github.com/Papooch/nestjs-cls/issues/92
+			interceptor: {
+				mount: true,
+				setup: (cls, context) => {
+					const req = context.switchToHttp().getRequest<FastifyRequest<{ Params: { id?: string } }>>();
+					if (req.params?.id && req.body) {
+						// 供自定义参数验证器(UniqueConstraint)使用
+						cls.set("operateId", Number.parseInt(req.params.id));
+					}
+				},
+			},
+		}),
+		// Add CQRS module
+		CqrsModule,
+		SharedModule,
+		DatabaseModule,
 
-    AuthModule,
-    SystemModule,
-    TasksModule.forRoot(),
-    ToolsModule,
-    SocketModule,
-    HealthModule,
-    SseModule,
-    NetdiskModule,
-    DashboardModule,
+		AuthModule,
+		SystemModule,
+		TasksModule.forRoot(),
+		ToolsModule,
+		SocketModule,
+		HealthModule,
+		SseModule,
+		NetdiskModule,
+		DashboardModule,
 
-    // biz
-    TestingModule,
-    // end biz
+		// biz
+		TestingModule,
+		// end biz
 
-    TodoModule,
-  ],
-  providers: [
-    { provide: APP_FILTER, useClass: AllExceptionsFilter },
+		TodoModule,
+	],
+	providers: [
+		{ provide: APP_FILTER, useClass: AllExceptionsFilter },
 
-    { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
-    { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
-    {
-      provide: APP_INTERCEPTOR,
-      useFactory: () => new TimeoutInterceptor(15 * 1000),
-    },
-    { provide: APP_INTERCEPTOR, useClass: IdempotenceInterceptor },
+		{ provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
+		{ provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
+		{
+			provide: APP_INTERCEPTOR,
+			useFactory: () => new TimeoutInterceptor(15 * 1000),
+		},
+		{ provide: APP_INTERCEPTOR, useClass: IdempotenceInterceptor },
 
-    { provide: APP_GUARD, useClass: JwtAuthGuard },
-    { provide: APP_GUARD, useClass: RbacGuard },
-    { provide: APP_GUARD, useClass: ThrottlerGuard },
-  ],
+		{ provide: APP_GUARD, useClass: JwtAuthGuard },
+		{ provide: APP_GUARD, useClass: RbacGuard },
+		{ provide: APP_GUARD, useClass: ThrottlerGuard },
+	],
 })
 export class AppModule {}
